@@ -4,11 +4,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-jop^2)-w*ny0ba)nxjc(0_3==1ojb0zwu-62kjb&wankzby*%k'
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
+    'www.frenky.pythonanywhere.com/',
+    'frenky.pythonanywhere.com/',
+    'https://frenky.pythonanywhere.com/',
 ]
 
 INSTALLED_APPS = [
