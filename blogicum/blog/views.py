@@ -33,9 +33,8 @@ def profile(request, username):
                       и перечнем публикаций, разделенных на страницы.
     """
     user = get_object_or_404(User, username=username)
-    post = user.post.all()
-    if request.user != user or not request.user.is_authenticated:
-        post = get_filtered_posts(posts=user.post.all())
+    post = get_filtered_posts(
+        posts=user.posts, apply_filter=request.user != user)
     page_obj = paginate(post, request, POSTS_LIMIT)
     return render(request, 'blog/profile.html', {
         'profile': user,
@@ -471,7 +470,7 @@ def category_posts(request, category_slug):
         slug=category_slug,
         is_published=True
     )
-    posts = get_filtered_posts(posts=category.post.all())
+    posts = get_filtered_posts(posts=category.posts.all())
     page_obj = paginate(posts, request, POSTS_LIMIT)
     context = {
         'category': category,
