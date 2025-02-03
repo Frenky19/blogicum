@@ -275,6 +275,7 @@ class PostDetailView(DetailView):
             posts = posts.filter(id=post_id, author=user).first()
             if posts:
                 return posts
+        # далее возврат объекта отфильтрованного по критериям
         return get_object_or_404(
             get_filtered_posts(
                 posts, apply_filter=True,
