@@ -12,6 +12,16 @@ from .models import Category, Comment, Post, User
 from .service import get_filtered_posts, paginate
 
 
+@login_required
+def like_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    if request.user in post.likes.all():
+        post.likes.remove(request.user)
+    else:
+        post.likes.add(request.user)
+    return redirect('blog:post_detail', post_id=post.pk)
+
+
 def profile(request, username):
     """
     Отображает страницу профиля пользователя с его публикациями.

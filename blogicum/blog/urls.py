@@ -7,6 +7,7 @@ app_name = 'blog'
 
 
 posts_url = [
+    path('<int:post_id>/like/', views.like_post, name='like_post'),
     path('create/', views.PostCreateView.as_view(), name='create_post'),
     path(
         '<int:post_id>/',

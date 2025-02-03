@@ -152,12 +152,18 @@ class Post(PublishedModel):
         null=True,
         verbose_name='Категория'
     )
+    likes = models.ManyToManyField(
+        User, related_name="liked_posts", blank=True
+    )
 
     class Meta:
         verbose_name = 'публикация'
         verbose_name_plural = 'Публикации'
         ordering = ['-pub_date']
         default_related_name = '%(class)ss'
+
+    def total_likes(self):
+        return self.likes.count()
 
     def __str__(self):
         return Truncator(self.title).words(LIMIT_OF_SYMBOLS)
