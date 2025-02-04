@@ -1,1 +1,1 @@
-# Blogicum_progect
+# Blogicum_project
