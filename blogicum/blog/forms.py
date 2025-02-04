@@ -64,7 +64,7 @@ class PostCreateForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        exclude = ['created_at', 'author']
+        exclude = ['created_at', 'author', 'likes']
         widgets = {
             'text': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
             'pub_date': forms.DateTimeInput(attrs={

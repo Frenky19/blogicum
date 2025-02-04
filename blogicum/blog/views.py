@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.generic import CreateView, DetailView, UpdateView
@@ -14,12 +15,22 @@ from .service import get_filtered_posts, paginate
 
 @login_required
 def like_post(request, post_id):
-    post = get_object_or_404(Post, id=post_id)
-    if request.user in post.likes.all():
-        post.likes.remove(request.user)
-    else:
-        post.likes.add(request.user)
-    return redirect('blog:post_detail', post_id=post.pk)
+    if request.method == 'POST':
+        post = get_object_or_404(Post, id=post_id)
+        liked = False
+
+        if request.user in post.likes.all():
+            post.likes.remove(request.user)
+        else:
+            post.likes.add(request.user)
+            liked = True
+
+        return JsonResponse({
+            'liked': liked,
+            'total_likes': post.total_likes(),
+        })
+
+    return JsonResponse({'error': 'Invalid request'}, status=400)
 
 
 def profile(request, username):

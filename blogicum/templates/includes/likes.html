@@ -1,13 +1,15 @@
-<p>{% if user.is_authenticated %}
-    {% load django_bootstrap5 %}
-    <form method="post" action="{% url 'blog:like_post' post.id %}">
-        {% csrf_token %}
+{% include "includes/js_likes_script.html"%}
+<a a style="float: right;" id="like-section-{{ post.id }}">
+  {% if user.is_authenticated %}
+    <span id="like-count-{{ post.id }}">{{ post.total_likes }}</span>
+      <button class="like-button" data-post-id="{{ post.id }}">
         {% if user in post.likes.all %}
-            {% bootstrap_button button_type="submit" content="Убрать лайк" %}
+          ❤️
         {% else %}
-            {% bootstrap_button button_type="submit" content="Поставить лайк" %}
+          🤍
         {% endif %}
-    </form>
-{% else %}
-    <p><a href="{% url 'login' %}">Войдите</a>, чтобы поставить лайк.</p>
-{% endif %}</p>
+      </button>
+    {% else %}
+      <p><a href="{% url 'login' %}">Войдите</a>, чтобы поставить лайк.</p>
+  {% endif %}
+</a>

@@ -12,7 +12,8 @@
             <img class="border-3 rounded img-fluid img-thumbnail mb-2 mx-auto d-block" src="{{ post.image.url }}">
           </a>
         {% endif %}
-        <h5 class="card-title">{{ post.title }}</h5><a style="float: right;">Лайков: {{ post.total_likes }} </a>
+        <h5 class="card-title">{{ post.title }}</h5>
+        {% include "includes/likes.html" %}
         <h6 class="card-subtitle mb-2 text-muted">
           <small>
             {% if not post.is_published %}
@@ -37,7 +38,6 @@
           </div>
         {% endif %}
         {% include "includes/comments.html" %}
-        {% include "includes/likes.html" %}
       </div>
     </div>
   </div>

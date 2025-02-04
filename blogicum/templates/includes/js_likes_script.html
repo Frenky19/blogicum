@@ -1,0 +1,56 @@
+<script>
+    function getCSRFToken() {
+        let cookies = document.cookie.split('; '); // Получаем куки как массив
+        for (let cookie of cookies) {
+            if (cookie.startsWith('csrftoken=')) {
+                return cookie.split('=')[1]; // Возвращаем значение CSRF-токена
+            }
+        }
+        return ''; // Если токен не найден, возвращаем пустую строку
+    }
+    // Функция для инициализации кнопок "Поставить лайк"
+    function initializeLikeButtons() {
+        // Получаем все кнопки с классом "like-button"
+        const likeButtons = document.querySelectorAll('.like-button');
+    
+        // Удаляем все старые обработчики, чтобы не возникало дублирования
+        likeButtons.forEach(button => {
+            button.removeEventListener('click', handleLikeButtonClick); // Удаляем обработчик, если он был добавлен ранее
+            button.addEventListener('click', handleLikeButtonClick);   // Привязываем обработчик заново
+        });
+    }
+    // Обработчик события клика для кнопки лайков
+    function handleLikeButtonClick(event) {
+        const button = event.currentTarget; // Текущая активная кнопка
+        const postId = button.getAttribute('data-post-id'); // ID поста
+        const csrfToken = getCSRFToken(); // Получаем CSRF токен
+        fetch(`/posts/${postId}/like/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken // Передаем CSRF токен с запросом
+            },
+        })
+        .then(response => response.json()) // Преобразуем ответ в JSON
+        .then(data => {
+            // Проверяем, есть ли ошибки
+            if (data.error) {
+                console.error(data.error); // Если есть ошибка, выводим её в консоль
+                return;
+            }
+            // Обновляем количество лайков
+            const likeCount = document.querySelector(`#like-count-${postId}`);
+            if (likeCount) {
+                likeCount.textContent = data.total_likes; // Устанавливаем новое значение количества лайков
+            }
+    
+            // Обновляем текст кнопки
+            button.textContent = data.liked ? '❤️' : '🤍';
+        })
+        .catch(error => {
+            console.error('Ошибка:', error); // Если запрос завершился ошибкой, выводим её
+        });
+    }
+    // Запускаем инициализацию сразу после загрузки страницы
+    document.addEventListener('DOMContentLoaded', initializeLikeButtons);
+</script>
