@@ -10,6 +10,6 @@
         {% endif %}
       </button>
     {% else %}
-      <div><a href="{% url 'login' %}">Войдите</a>, чтобы поставить лайк.</div>
+      <div><a href="{% url 'login' %}">Войдите</a>, чтобы поставить лайк. <span a style="float: right; id="like-count-{{ post.id }}">{{ post.total_likes }} ❤️</span></div>
   {% endif %}
 </a>

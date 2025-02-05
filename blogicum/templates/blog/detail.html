@@ -13,7 +13,6 @@
           </a>
         {% endif %}
         <h5 class="card-title">{{ post.title }}</h5>
-        {% include "includes/likes.html" %}
         <h6 class="card-subtitle mb-2 text-muted">
           <small>
             {% if not post.is_published %}
@@ -38,6 +37,7 @@
           </div>
         {% endif %}
         {% include "includes/comments.html" %}
+        {% include "includes/likes.html" %}
       </div>
     </div>
   </div>
